@@ -15,11 +15,14 @@ namespace Captura.FFmpeg
 
         static DownloadFFmpeg()
         {
-            var bits = Environment.Is64BitOperatingSystem ? 64 : 32;
+            if (!Environment.Is64BitOperatingSystem)
+            {
+                throw new Exception("BtbN builds are only available for 64 bits.");
+            }
 
-            FFmpegUri = new Uri($"https://ffmpeg.zeranoe.com/builds/win{bits}/static/ffmpeg-latest-win{bits}-static.zip");
+            FFmpegUri = new Uri($"https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip");
 
-            FFmpegArchivePath = Path.Combine(Path.GetTempPath(), "ffmpeg.zip");
+            FFmpegArchivePath = Path.Combine(Path.GetTempPath(), "ffmpeg-master-latest-win64-gpl");
         }
 
         public static async Task DownloadArchive(Action<int> Progress, IWebProxy Proxy, CancellationToken CancellationToken)
